@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <title>CMS</title>
+
+
+
+    <!-- Fonts -->
+    {% comment %} <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css"> {% endcomment %}
+
+    <!-- Styles -->
+    <link href="{% static 'css/assets/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/assets/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/assets/themify-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/cms.css' %}" rel="stylesheet">
+    <link href="{% static 'css/item-preview.css' %}" rel="stylesheet">
+    {% block styles %}
+    {% endblock %}
+</head>
+<header id="top-nav">
+  <div class="cms-nav container cms-container">
+    <div class="row">
+      <div class="col-md-5 cms-col">
+        <div class="ham">
+          <i class="fa fa-list"></i>
+        </div>
+        <div class="left-menu">
+          <ul id="main-menu" class="main-menu">
+            <li class="item"><a href="/#home">home</a></li>
+            <li class="item"><a href="/#about">about</a></li>
+            <li class="item"><a href="/#services">services</a></li>
+            <li class="item"><a href="/#portfolio">portfolio</a></li>
+            <li class="item"><a href="/#contacts">contacts</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-2 cms-col top-logo">
+        <div class="logo-container">
+          <a href="/">
+            <div class="img-container">
+              <img src="{{ header.logo.url }}" alt="LOGO" />
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-5 cms-col">
+        <div class="right-menu">
+          <div class="row">
+            <div class="col-md-4 cms-col pad-0">
+              <div
+                class="search-container"
+                data-toggle="modal"
+                data-target="#searchModal"
+                onclick="initClose()"
+              >
+                <i class="fa fa-search cms-fa"></i>
+              </div>
+            </div>
+            <div class="col-md-6 cms-col">
+              <div class="social-container">
+                <div class="social-item">
+                  <a href="{{ header.first_sm_account.url }}" target="_blank"><i class="fa fa-{{ header.first_sm_account.icon.icon  }} cms-fa"></i></a>
+                </div>
+                <div class="social-item">
+                  <a href="{{ header.second_sm_account.url }}" target="_blank"><i class="fa fa-{{ header.second_sm_account.icon.icon }} cms-fa"></i></a>
+                </div>
+                <div class="social-item">
+                  <a href="{{ header.third_sm_account.url }}" target="_blank"><i class="fa fa-{{ header.third_sm_account.icon.icon }} cms-fa"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 cms-col pad-0">
+              <a
+                class="btn btn-primary hire-me"
+                data-toggle="modal"
+                data-target="#hireModal"
+                >Hire Me</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="body-container">
+    {% block content %}
+    {% endblock %}
+</section>
+
+<footer>
+    <div class="container footer-container" style="height:fit-content;">
+      <div class="row copyright" style="height:fit-content !important;">
+        <div class="col-md-3">
+          <p class="copyright roboto" style="display:inline-table;">&copy;{{ footer.copyright_year }}  |  {{ footer.copyright_for }}</p>
+        </div>
+        <div class="col-md-6">
+            {% if socials %}
+            <p class="social">
+              {% for social in socials %}
+              <a href="{{social.url}}" title="{{social.name}}" class="{{social.name}}" target="_blank"><i class="fa fa-{{social.icon.icon}}"></i></a>
+              {% endfor %}
+            </p>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+          <p class="credit roboto">{{ footer.site_name }}</p>
+          <!-- Please do not remove the backlink to us unless you support the development at https://bootstrapious.com/donate. It is part of the license conditions. Thanks for understanding :) -->
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<!-- Modals -->
+
+<div id="modal" class="modal fade huge" role="dialog">
+    <div class="modal-dialog">
+
+    </div>
+</div>
+
+
+
+<div id="hireModal" class="modal fade small" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: auto;">
+      <button class="close" onclick="" data-dismiss="modal">&times;</button>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="img-container">
+                <img src="{{ header.logo.url }}" alt="LOGO" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h1>Hire Me On</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-upwork">
+          <a href="http://" target="_blank" rel="noopener noreferrer"
+            >Upwork</a
+          >
+        </button>
+        <button class="btn btn-freelancer">
+          <a href="http://" target="_blank" rel="noopener noreferrer"
+            >Freelancer</a
+          >
+        </button>
+        <button class="btn btn-guru">
+          <a href="http://" target="_blank" rel="noopener noreferrer"
+            >Guru</a
+          >
+        </button>
+        <button class="btn btn-pph">
+          <a href="http://" target="_blank" rel="noopener noreferrer"
+            >People per hour</a
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search Modal -->
+<div id="searchModal" class="modal fade small" role="dialog">
+  <div class="modal-dialog">
+    <button
+      id="close-btn"
+      class="close-btn"
+      onclick=""
+      data-dismiss="modal"
+    >
+      <i class="fa fa-remove"></i>
+    </button>
+    <div class="modal-content" style="width: auto;">
+      <div class="modal-body">
+        <form action="#" method="get" style="margin:0;">
+          <div class="form-group">
+            <input
+              type="text"
+              name="search-box"
+              id="search-box"
+              placeholder="Look for something here"
+            />
+            <button class="btn search-btn" type="submit" style="height:100%;">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</html>
+
+    <!-- SCRIPTS HERE -->
+    <script src="{% static 'js/jquery0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+    {% block scripts %}
+    {% endblock %}
+
+
+
+
+<script>
+
+  function loadModalContent(url){
+    jQuery.get(url, function (data) {
+        $("#modal > .modal-dialog").html(data);
+    });
+  }
+
+  let top_nav = document.getElementById("top-nav");
+  let home_bg = document.getElementById("home_bg");
+  let greeting = document.getElementById("greeting");
+  let screen_height = window.innerHeight;
+  let closeBtn = document.getElementById("close-btn");
+  var opened = false;
+  var distance = window.innerWidth - greeting.clientWidth;
+
+  function initClose() {
+    closeBtn.style.transform = "translateY(0px)";
+  }
+
+  document.querySelector("#personal-image").style.height = document.querySelector("#personal-image").clientWidth + "px";
+  // let bg = (home_section.children.style.height = screen_height);
+  // document.onload(function(){
+  home_bg.style.height = screen_height + "px";
+  home_bg.style.width = "100%";
+  // top_nav.style.width = window.innerWidth + "px";
+  greeting.style.right = distance / 2 + "px";
+  greeting.style.left = distance / 2 + "px";
+  // });
+  document.addEventListener("scroll", function() {
+    if (window.scrollY > window.innerHeight - 100) {
+      top_nav.style.background = "#1f2327";
+      top_nav.style.boxShadow = "0 1px 10px #1f2327";
+    } else {
+      top_nav.style.background = "none";
+      top_nav.style.boxShadow = "none";
+    }
+
+    if (window.innerWidth < 1000) {
+      document.querySelector(".left-menu").style.left = "-300px";
+      opened = false;
+    }
+  });
+
+
+
+  if (window.innerWidth < 1000) {
+    // let html1 = document.querySelector("#rootAll");
+    let row = document.querySelector(".cms-nav > .row");
+    let menu = document.querySelector(".main-menu");
+    let logoContainer = document.querySelector(".logo-container");
+    let lmenu = document.querySelector(".left-menu");
+    let hamBtn = document.querySelector(".ham");
+    let topLogo = document.querySelector(".top-logo");
+    let socialContainer = document.querySelector(
+      ".right-menu .social-container"
+    );
+    let searchContainer = document.querySelector(
+      ".right-menu .search-container"
+    );
+    let hireMeBtn = document.querySelector(".right-menu .hire-me");
+    let hireModal = document.querySelector("#hireModal .modal-dialog");
+
+    // html1.style.display = "inline-table";
+    hireModal.style.width = "90%";
+    hireModal.style.margin = "130px auto";
+    greeting.style.top = "30%";
+
+    searchContainer.style.width = "40px";
+    row.style.display = "flex";
+
+    topLogo.style.margin = "auto";
+
+    logoContainer.style.width = "fit-content";
+    logoContainer.style.height = "fit-content";
+
+    socialContainer.style.display = "none";
+
+    hireMeBtn.style.display = "none";
+
+    menu.style.display = "grid";
+    menu.style.height = "fit-content";
+    menu.style.width = "fit-content";
+    menu.style.float = "left";
+    menu.style.padding = "20px";
+    menu.style.background = "#00000080";
+    menu.style.fontSize = "24px";
+
+    lmenu.style.display = "flex";
+    lmenu.style.height = "fit-content";
+    lmenu.style.width = "fit-content";
+    lmenu.style.position = "absolute";
+    lmenu.style.left = "-300px";
+    lmenu.style.margin = "0";
+
+    hamBtn.style.display = "block";
+
+    hamBtn.addEventListener("click", function() {
+      if (!opened) {
+        lmenu.style.left = "0";
+        opened = true;
+      } else {
+        lmenu.style.left = "-300px";
+        opened = false;
+      }
+    });
+  }
+
+  console.log(window.innerWidth);
+  console.log(screen.width - greeting.clientWidth);
+
+  $(function() {
+      var selectedClass = "UIUX";
+      $(".filter").click(function() {
+        // alert('fil');
+        selectedClass = $(this).attr("data-rel");
+        // alert(selectedClass);
+        $("#gallery").fadeTo(100, 0.1);
+        $("#gallery .pics")
+          .not("." + selectedClass)
+          .fadeOut()
+          .removeClass("animation");
+        setTimeout(function() {
+          $("." + selectedClass)
+            .fadeIn()
+            .addClass("animation");
+          $("#gallery").fadeTo(300, 1);
+        }, 300);
+      });
+    });
+</script>

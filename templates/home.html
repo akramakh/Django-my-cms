@@ -1,0 +1,295 @@
+
+
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+.gallery {
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  -webkit-column-width: 33%;
+  -moz-column-width: 33%;
+  column-width: 33%; }
+  .gallery .pics {
+  -webkit-transition: all 350ms ease;
+  transition: all 350ms ease; }
+  .gallery .animation {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1); }
+
+  @media (max-width: 450px) {
+  .gallery {
+  -webkit-column-count: 1;
+  -moz-column-count: 1;
+  column-count: 1;
+  -webkit-column-width: 100%;
+  -moz-column-width: 100%;
+  column-width: 100%;
+  }
+  }
+
+  @media (max-width: 400px) {
+  .btn.filter {
+  padding-left: 1.1rem;
+  padding-right: 1.1rem;
+  }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section id="home">
+        <div class="bg" id="home_bg">
+          <div class="overlay"></div>
+          <img src="{{ home.bg_image.url }}" alt="background" />
+        </div>
+        <div class="greeting-container" id="greeting">
+          <h1 class="question">{{ home.intro_q }}</h1>
+          <b class="answer">{{ home.intro_p }}</b>
+          <a href="#about" class="btn btn-primary explore-me">{{ home.intro_btn }}</a>
+        </div>
+      </section>
+      <section id="about">
+        <div class="container cms-container">
+          <div class="row">
+            <div class="col-md-3 cms-col">
+              <div class="img-container" id="personal-image">
+                <img src="{{ about.personal_image.url }}" alt="avatar" />
+              </div>
+            </div>
+            <div class="col-md-9 cms-col">
+              <div class="row">
+                <div class="col-md-12 cms-col">
+                  <div class="info">
+                    <h1 class="name">{{ about.username }}</h1>
+                    <p class="description" id="about-bio">{% autoescape off %}{{ about.bio }}{% endautoescape %}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 cms-col">
+                  <h2 class="skills-title"></h2>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 cms-col skills-cat">
+                  <div class="title">programming</div>
+                  <div class="skills">
+                    <ul>
+                      <li><i class="fa fa-cog"></i></li>
+                      <li><i class="fa fa-cog"></i></li>
+                      <li><i class="fa fa-cog"></i></li>
+                      <li><i class="fa fa-cog"></i></li>
+                      <li><i class="fa fa-cog"></i></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 cms-col skills-cat">
+                  <div class="title">Graphic Design</div>
+                  <div class="skills">
+                    <ul>
+                      <li><i class="fa fa-cog"></i></li>
+                      <li><i class="fa fa-cog"></i></li>
+                      <li><i class="fa fa-cog"></i></li>
+                      <li><i class="fa fa-cog"></i></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 cms-col">
+                  <a href="{{ about.resume.url }}" class="btn btn-primary"><i class="fa fa-file"></i> Download Resume`</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {% if service %}
+      <section id="services" class="section-gray">
+        <div class="container clearfix">
+          <div class="row services">
+            <div class="col-md-12">
+              <h1 class="heading section-header">{{service.title}}</h1>
+              {% if services_items %}
+              <div class="row service-container">
+                {% for service in services_items %}
+                <div class="col-sm-4">
+                  <div class="box box-services">
+                    <div class="icon"><i class="fa fa-{{service.icon.icon}}"></i></div>
+                    <h4 class="heading">{{service.title}}</h4>
+                    <p>{{service.description}}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4 center">
+                    <div class="box box-button">
+                      <button class="btn btn-primary hire-me" data-toggle="modal" data-target="#hireModal">Hire me</button>
+                    </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+      {% endif %}
+
+      <section id="portfolio">
+        <div class="container cms-container">
+          <div class="row">
+            <h1 class="section-title section-header">{{portfolio.title}}</h1>
+          </div>
+          <div class="row">
+            <div class="col-md-12 cms-col">
+              <ul class="menu">
+                <li><a class="filter active" data-rel="all">all</a></li>
+                <li><a class="filter" data-rel="websites">websites</a></li>
+                <li><a class="filter" data-rel="UIUX">ui/ux</a></li>
+                <li><a class="filter" data-rel="Android">android</a></li>
+                <li><a class="filter" data-rel="graphicDesign">graphic design</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="row gallery" id="gallery">
+            {% if pis %}
+            {% for pi in pis %}
+            <div class="col-md-4 col-xs-6 cms-col pics animation all {{ pi.tags.first.name }}">
+              <div class="portfolio-item">
+                <img src="{{pi.images.first.image.url}}" alt="Portfolio Item" />
+                <!-- <a href="{% url 'portfolio_detail' pi.id %}" class="item-overlay">{{pi.name}}</a> -->
+                 <span class="item-overlay" data-toggle="modal" data-target="#modal" onclick="loadModalContent('/portfolio/modal/{{pi.id}}')">{{pi.name}}</span>
+              </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <div class="row">
+            <div class="col-md-12 cms-col">
+              <button class="btn btn-primary more">
+                load more
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+      <section id="contacts">
+        <div class="container cms-container">
+          <div class="row">
+            <!-- <div class="col-md-1 cms-col"></div> -->
+            <div class="col-md-12 cms-col">
+              <div class="contact-box">
+                <div class="row">
+                  <div class="col-md-1 cms-col"></div>
+                  <div class="col-md-5 cms-col text">
+                    <h2 class="title">{{ contact.title }}</h2>
+                    <p class="contact-msg">{% autoescape off %}{{ contact.intro }}{% endautoescape %}</p>
+                    <div class="single_message_right_info">
+                        <ul>
+                            <li><a><i class="fa fa-home"></i> {{ contact.address }}</a></li>
+                            <li><a><i class="fa fa-phone"></i> {{ contact.phone }}</a></li>
+
+                            <li><a><i class="fa fa-envelope"></i> {{ contact.email }}</a></li>
+                        </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-5 cms-col fields">
+                    <form action="/mail" method="post" id="message_form">
+                      <div class="input-wrap">
+                        <input
+                          type="text"
+                          name="firstname"
+                          id="firstname"
+                          placeholder="First Name"
+                        />
+                        <input
+                          type="text"
+                          name="lastname"
+                          id="lastname"
+                          placeholder="Last Name"
+                        />
+                      </div>
+                      <div class="input-wrap">
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          placeholder="Email Address"
+                        />
+                      </div>
+                      <div class="input-wrap">
+                        <textarea
+                          name="message"
+                          id="message"
+                          cols="30"
+                          rows="10"
+                          class="msg"
+                          placeholder="Type Your Message Here ..."
+                        ></textarea>
+                      </div>
+                      <div class="input-wrap">
+                        <input
+                          type="button"
+                          value="SEND"
+                          class="btn btn-primary"
+                          onclick="sendMail();"
+                        />
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="col-md-1 cms-col"></div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-1 cms-col"></div> -->
+          </div>
+        </div>
+      </section>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  let portfolioItem = document.querySelectorAll("#portfolio .portfolio-item");
+  for (let index = 0; index < 6; index++) {
+    portfolioItem[index].style.height = portfolioItem[index].clientWidth + "px";
+  }
+
+    function sendMail(){
+      var firstname = $('#firstname');
+      var lastname = $('#lastname');
+      var email = $('#email');
+      var message = $('#message');
+      $.ajax({
+          method:'POST',
+          url:'/mail',
+          dataType:'html',
+          data:{
+              'firstname':firstname.val(),
+              'lastname':lastname.val(),
+              'email':email.val(),
+              'message':message.val()
+          },
+          success:function (data) {
+              alert(data);
+              firstname.val("");
+              lastname.val("");
+              email.val("");
+              message.val("");
+          }
+      });
+    }
+
+</script>
+
+{% endblock %}

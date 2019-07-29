@@ -1,0 +1,124 @@
+
+{% load static %}
+<link href="{% static 'css/item-preview.css' %}" rel="stylesheet">
+<style media="screen">
+  .modal.huge .modal-dialog{
+    padding: 20px;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+  }
+  .preview-container {
+    margin-top: 0px; 
+    height: 90vh;
+    margin-bottom: 10px;
+}
+
+.preview-container .img-preview-container {
+    /* width: 100%; */
+    display: block;
+    height: 100%;
+    <!-- box-shadow: 0 0 5px #333; -->
+}
+</style>
+<section class="body-container">
+
+      <div class="row preview-container">
+        <div class="col-md-8 cms-col">
+
+          <div class="img-preview-container">
+            <span class="fa fa-angle-left prev"></span>
+            <img src="{{pi.images.first.image.url}}" alt="item-image" />
+            <span class="fa fa-angle-right next"></span>
+          </div>
+
+        </div>
+        <div class="col-md-4 cms-col">
+          <div class="item-info">
+            <div class="header"><span>{{pi.name}}</span></div>
+
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td class="icon">Field</td>
+                  <td class="info">
+                    <p>
+                    {% for tag in pi.tags.all %}
+                      <span class="tag">{{tag.name}}</span>
+                    {% endfor %}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="icon">Client</td>
+                  <td class="info">
+                    <p>{{pi.client}}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="icon">Date</td>
+                  <td class="info">
+                    <p>{{pi.pub_date}}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="icon">Price</td>
+                  <td class="info">
+                    <p><i class="fa fa-dollar"></i> {{pi.price}}.00</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="icon">Rate</td>
+                  <td class="info">
+                    {% for i in rate  %}
+                    {% if i < pi.rate %}
+                    <i class="fa fa-star "></i>
+                    {% elif i <= pi.rate %}
+                    <i class="fa fa-star-half-o"></i>
+                    {% else %}
+                    <i class="fa fa-star-o "></i>
+                    {% endif %}
+                    {% endfor %}
+                  </td>
+                </tr>
+                <tr class="disc">
+                  <td class="icon">Discription</td>
+                  <td class="info">
+                    <p>
+                    {{pi.description}}
+                    </p>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="icon">Client<br />Feedback</td>
+                  <td class="info">
+                    <p>
+                      <i class="fa fa-quote-left"></i> {{pi.feedback}}<i class="fa fa-quote-right"></i>
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td class="icon">Live</td>
+                  <td class="info"><a href="{{pi.live_link}}">click me</a></td>
+                </tr>
+                <tr>
+                  <td class="icon"></td>
+                  <td class="info">
+                    <a
+                      class="btn btn-primary order-one"
+                      data-toggle="modal"
+                      data-target="#hireModal"
+                      >Order One</a
+                    >
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
